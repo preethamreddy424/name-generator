@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Style Pro Nickname Generator</title>
+  <style>
+    body { margin:0; font-family:Arial,sans-serif; background:#ecf0f1; }
+    header { background:#2c3e50; color:white; padding:12px 20px; display:flex; justify-content:space-between; align-items:center; }
+    header h1 { margin:0; font-size:24px; }
+    .menu-icon { font-size:24px; cursor:pointer; }
+    .sidebar { height:100%; width:0; position:fixed; top:0; left:0; background:#2c3e50; overflow-x:hidden; transition:.3s; padding-top:60px; z-index:1000; }
+    .sidebar a { padding:12px 20px; font-size:18px; color:white; text-decoration:none; display:block; transition:.2s; }
+    .sidebar a:hover { background:#34495e; }
+    .main-content { padding:30px 20px; text-align:center; min-height:calc(100vh - 60px); }
+    .description { max-width:600px; margin:10px auto 15px; color:#2c3e50; font-size:16px; }
+    .search-container { margin-bottom:20px; }
+    .search-container input { width:300px; padding:12px; font-size:16px; border:1px solid #ccc; border-radius:4px;}
+    .search-container button { padding:12px 20px; font-size:16px; background:#3498db; color:white; border:none; border-radius:4px; margin-left:10px; cursor:pointer; }
+    .search-container button:hover { background:#2980b9; }
+    .option-buttons { margin-bottom:20px; }
+    .option-buttons button { background:#fff; border:2px solid #3498db; color:#3498db; padding:10px 20px; margin:0 5px; border-radius:5px; cursor:pointer; font-size:16px; transition:.3s; }
+    .option-buttons button:hover { background:#3498db; color:white; }
+    .styled-list { max-width:800px; margin:0 auto 30px; text-align:left; }
+    .styled-list div { display:flex; justify-content:space-between; align-items:center; background:white; margin:5px 0; padding:8px 12px; border-radius:5px; }
+    .styled-text { flex:1; user-select:text; overflow-wrap:anywhere; }
+    .copy-btn { background:#2980b9; color:white; border:none; padding:5px 12px; border-radius:5px; cursor:pointer; font-size:14px; }
+    .copy-btn:hover { background:#1f5f86; }
+    #copyAlert { position:fixed; bottom:30px; right:30px; background:#27ae60; color:white; padding:12px 20px; border-radius:5px; display:none; z-index:2000; }
+  </style>
+</head>
+<body>
+
+<div id="mySidebar" class="sidebar">
+  <a href="javascript:void(0)" onclick="showHome(); closeNav()">Home</a>
+  <a href="#">Nicknames</a>
+  <a href="#">Styles</a>
+  <a href="javascript:void(0)" onclick="showAbout(); closeNav()">About</a>
+  <a href="javascript:void(0)" onclick="showContact(); closeNav()">Contact</a>
+</div>
+
+<header>
+  <span class="menu-icon" onclick="openNav()">☰</span>
+  <h1>Style Pro Nickname Generator</h1>
+  <span></span>
+</header>
+
+<div class="main-content" id="mainContent"></div>
+<div id="copyAlert">Copied to clipboard!</div>
+
+<script>
+  function openNav() { document.getElementById("mySidebar").style.width = "250px"; }
+  function closeNav() { document.getElementById("mySidebar").style.width = "0"; }
+
+  const symbols = [
+    '★','✪','✿','彡','☠','♛','༒','๑','•̩̩͙','۞','꧁','꧂','ツ','メ','么','乡','乂','ズ','王','帝','神','卍','气','๛',
+    '᪲','᪳','き','√','ҩ','Ҩ','あ','Ⓥ','','×͜×','×᷼×','╰‎ ᷼ ‎╯','╰‿╯','༄ᵈʳᵏ᭄','♡֟፝','❁','⚚','☕','ᖫᖭ','☬','୧୨','ぷ','ᯓ','༗','ᵖᶜ 모','Ѽ','ѽ','Ѿ','🝪','Ꮤ','⨈','Ѯ','Ѱ','ဗ','♥︎','❥','❦','☙','♠§','❣','ᰔ','ෆ','ʚ','ɞ','ლ','ꨄ','ஐ','ᦗ','␌','⸙','☯','㊜','☢','㉿','〄','♋','𖣐','ʕ•ᴥ•ʔ','⎋','ꨄꤪꤨ','♚','ꗃ','𖤍','ꗈ','♪','☎','☂','☔','™','⚓','☸','♨','༆','☁','╰╮╭╯','᭓','戀','♔','⛄','☃️','⚡','♝','♻️','༕','❔❓','ོꪾ','ʚiɞ','ʚɞ','⳻‿⳺Marshmellow','⳻ ֟፝᷼ ⳺'
+  ];
+
+  const fonts = [
+    '𝓐','𝔄','𝐀','𝕬','ᴬ','𝗔','𝙰','𝘈','𝘼','𝖠','𝓑','𝔅','𝐁','𝕭','ʙ','𝗕','𝙱','𝘉','𝘽','𝖡',
+    '𝓒','𝔇','𝐂','𝕮','ᴄ','𝗖','𝙲','𝘊','𝘾','𝖢','𝒟','𝔈','𝐃','𝕯','ᴅ','𝗗','𝙳','𝘋','𝘿','𝖣',
+    '𝓔','𝓕','𝓖','𝓗','𝓘','𝓙','𝓚','𝓛','𝓜','𝓝','𝓞','𝓟','𝓠','𝓡','𝓢','𝓣','𝓤','𝓥','𝓦','𝓧','𝓨','𝓩',
+    '𝙖','𝙗','𝙘','𝙙','𝙚','𝙛','𝙜','𝙝','𝙞','𝙟','𝙠','𝙡','𝙢','𝙣','𝙤','𝙥','𝙦','𝙧','𝙨','𝙩','𝙪','𝙫','𝙬','𝙭','𝙮','𝙯',
+    '𝗮','𝗯','𝗰','𝗱','𝗲','𝗳','𝗴','𝗵','𝗶','𝗷','𝗸','𝗹','𝗺','𝗻','𝗼','𝗽','𝗾','𝗿','𝘀','𝘁','𝘂','𝘃','𝘄','𝘅','𝘆','𝘇'
+  ];
+
+  const emojis = [
+    '😎','🔥','💀','🌟','🎮','🥇','😍','👍','💯','🚀','💥','💘','💝','🥳','🧠','👑','🎯','🛡️','🎲','💎',
+    '😈','🦾','🦿','💫','💤','🔱','👽','🌀','👾','🎆','✨','🧨','🎉','⚡','❤️‍🔥','🥷','👻','💣','🔮','🕹️',
+    '🏆','🎧','📱','🧃','👀','🌈','🪄','🌌','🔊','🪙','🎓','📛','🥶','🧊','🛸','🚁','🦄','🐉','🤯','🫀'
+  ];
+
+  const randomNames = ['Noob','Hunter','Sniper','DarkKing','ProMax','Shadow','Killer','Legend','Ghost','Nova','Phantom','Storm','Fury','Drake','Angel','Beast','Venom','Titan','Zeno','Reaper','Joker','Xtreme','Blaze','Thor','Flash','Omega','Wolf','Ninja'];
+  let activeCategory = 'symbols';
+
+  function showCategory(cat) {
+    activeCategory = cat;
+    generateList();
+  }
+
+  function randomCase(str) {
+    return str.split('').map(ch => Math.random() > 0.5 ? ch.toUpperCase() : ch.toLowerCase()).join('');
+  }
+
+  function generateList() {
+    const name = document.getElementById("nameInput").value.trim();
+    const container = document.getElementById("styledList");
+    container.innerHTML = '';
+    document.getElementById("randomExamples").innerHTML = '';
+    if (!name) return;
+
+    const arr = activeCategory === 'symbols' ? symbols : activeCategory === 'fonts' ? fonts : emojis;
+
+    arr.forEach(item => {
+      const styled = activeCategory === 'fonts' ? item + randomCase(name) + item : item + name + item;
+      const div = document.createElement('div');
+      div.innerHTML = `<span class="styled-text">${styled}</span>
+                       <button class="copy-btn" onclick="copyToClipboard('${styled.replace(/'/g,"\\'")}')">Copy</button>`;
+      container.appendChild(div);
+    });
+  }
+
+  function generateRandomExamples() {
+    const container = document.getElementById("randomExamples");
+    container.innerHTML = '';
+    const arr = activeCategory === 'symbols' ? symbols : activeCategory === 'fonts' ? fonts : emojis;
+
+    for (let i = 0; i < 30; i++) {
+      const name = randomNames[Math.floor(Math.random() * randomNames.length)];
+      const item = arr[Math.floor(Math.random() * arr.length)];
+      const styled = activeCategory === 'fonts' ? item + randomCase(name) + item : item + name + item;
+      const div = document.createElement('div');
+      div.innerHTML = `<span class="styled-text">${styled}</span>
+                       <button class="copy-btn" onclick="copyToClipboard('${styled.replace(/'/g,"\\'")}')">Copy</button>`;
+      container.appendChild(div);
+    }
+  }
+
+  function copyToClipboard(txt) {
+    navigator.clipboard.writeText(txt).then(() => {
+      const alertBox = document.getElementById('copyAlert');
+      alertBox.style.display = 'block';
+      setTimeout(() => alertBox.style.display = 'none', 1500);
+    });
+  }
+
+  function showHome() {
+    document.getElementById('mainContent').innerHTML = `
+      <div class="description">This is an open nickname generator for all multiplayer and casual gamers. It has cool fonts and stylish names for Free Fire, PUBG, BGMI, Call of Duty.</div>
+      <div class="search-container">
+        <input type="text" id="nameInput" placeholder="Enter your name..." onkeydown="if(event.key==='Enter') generateList();" />
+        <button onclick="generateList()">Generate</button>
+      </div>
+      <div class="option-buttons">
+        <button onclick="showCategory('symbols')">Symbols</button>
+        <button onclick="showCategory('fonts')">Fonts</button>
+        <button onclick="showCategory('emojis')">Emojis</button>
+      </div>
+      <h3 style="color:#2c3e50;">Popular Styles:</h3>
+      <div class="styled-list" id="randomExamples"></div>
+      <h3 style="color:#2c3e50;">Your Generated Styles:</h3>
+      <div class="styled-list" id="styledList"></div>
+    `;
+    generateRandomExamples();
+  }
+
+  function showAbout() {
+    document.getElementById("mainContent").innerHTML = `
+      <div style="max-width:800px;margin:0 auto;background:#fff;padding:20px;border-radius:10px;text-align:left;color:#2c3e50;">
+        <h2>About Name Generator Tools</h2>
+        <p>Tools that help users create names for various purposes, such as apps, businesses, characters, or even babies. These apps often use algorithms or AI to generate unique and relevant names based on user input. Some popular examples include NameSnack, Panabee, Namify, and Brandroot.</p>
+        <h3>How They Work:</h3>
+        <ul>
+          <li><strong>User Input:</strong> Users typically provide keywords or categories.</li>
+          <li><strong>AI/Algorithms:</strong> The tool combines ideas and offers results.</li>
+          <li><strong>Customization:</strong> Filter by length, words, or domain availability.</li>
+        </ul>
+        <h3>Types of Name Generators:</h3>
+        <ul>
+          <li>App Name Generators</li>
+          <li>Business Name Generators</li>
+          <li>Character Name Generators</li>
+          <li>Baby Name Generators</li>
+          <li>General Name Generators</li>
+        </ul>
+        <h3>Benefits:</h3>
+        <ul>
+          <li>⏱ Time-saving</li>
+          <li>💡 Creative boost</li>
+          <li>📈 Branding</li>
+          <li>🌐 Availability checks</li>
+        </ul>
+      </div>
+    `;
+  }
+
+  function showContact() {
+    document.getElementById("mainContent").innerHTML = `
+      <div style="max-width:600px;margin:0 auto;background:#fff;padding:30px;border-radius:10px;text-align:center;">
+        <h2>Contact Us</h2>
+        <p>Connect with us on social media!</p>
+        <div style="margin-top:20px;">
+          <a href="https://www.instagram.com/pritham_reddyy?igsh=MWF3Nmo0cm5tMTd6dw==" target="_blank" style="display:inline-block;margin:10px;padding:12px 20px;background:#e1306c;color:white;text-decoration:none;border-radius:5px;font-weight:bold;">Instagram</a>
+          <a href="https://www.facebook.com/share/16pPoXeKZF/" target="_blank" style="display:inline-block;margin:10px;padding:12px 20px;background:#3b5998;color:white;text-decoration:none;border-radius:5px;font-weight:bold;">Facebook</a>
+        </div>
+      </div>
+    `;
+  }
+
+  window.onload = showHome;
+</script>
+
+</body>
+</html>
+>
